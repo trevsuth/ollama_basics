@@ -1,0 +1,101 @@
+$schema: https://azuremlschemas.azureedge.net/promptflow/latest/Flow.schema.json
+environment:
+  python_requirements_txt: requirements.txt
+inputs:
+  prompt:
+    type: string
+    default: Is this legal
+    is_chat_input: true
+    is_chat_history: false
+  context:
+    type: list
+    default: []
+    is_chat_history: true
+outputs:
+  output_prompt:
+    type: string
+    reference: ${generate_response.output}
+    is_chat_output: true
+nodes:
+- name: content_check
+  type: python
+  source:
+    type: code
+    path: content_filter.py
+  inputs:
+    input_text: ${inputs.prompt}
+- name: ollama_call
+  type: python
+  source:
+    type: code
+    path: ollama.py
+  inputs:
+    prompt: ${inputs.prompt}
+    context: ${inputs.context}
+  activate:
+    when: ${static_lookup.output}
+    is: not static
+- name: static_lookup
+  type: python
+  source:
+    type: code
+    path: static_lookup.py
+  inputs:
+    prompt: ${inputs.prompt}
+  activate:
+    when: ${content_check.output}
+    is: true
+- name: bad_content
+  type: python
+  source:
+    type: code
+    path: bad_content.py
+  inputs: {}
+  activate:
+    when: ${content_check.output}
+    is: false
+- name: generate_response
+  type: python
+  source:
+    type: code
+    path: generate_response.py
+  inputs:
+    ollama_output: ${ollama_call.output}
+    content_output: ${bad_content.output}
+    static_output: ${static_output.output}
+- name: static_prompt
+  type: python
+  source:
+    type: code
+    path: static_prompt.py
+  inputs: {}
+  activate:
+    when: ${static_lookup.output}
+    is: example_prompts
+- name: static_websites
+  type: python
+  source:
+    type: code
+    path: static_websites.py
+  inputs: {}
+  activate:
+    when: ${static_lookup.output}
+    is: websites
+- name: static_date
+  type: python
+  source:
+    type: code
+    path: static_date.py
+  inputs: {}
+  activate:
+    when: ${static_lookup.output}
+    is: date
+- name: static_output
+  type: python
+  source:
+    type: code
+    path: static_output.py
+  inputs:
+    prompt: ${static_prompt.output}
+    websites: ${static_websites.output}
+    dates: ${static_date.output}

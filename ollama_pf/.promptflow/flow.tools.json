@@ -1,0 +1,219 @@
+{
+  "package": {
+    "promptflow.tools.azure_content_safety.analyze_text": {
+      "module": "promptflow.tools.azure_content_safety",
+      "function": "analyze_text",
+      "inputs": {
+        "connection": {
+          "type": [
+            "AzureContentSafetyConnection"
+          ]
+        },
+        "hate_category": {
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "type": [
+            "string"
+          ]
+        },
+        "self_harm_category": {
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "type": [
+            "string"
+          ]
+        },
+        "sexual_category": {
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "type": [
+            "string"
+          ]
+        },
+        "text": {
+          "type": [
+            "string"
+          ]
+        },
+        "violence_category": {
+          "default": "medium_sensitivity",
+          "enum": [
+            "disable",
+            "low_sensitivity",
+            "medium_sensitivity",
+            "high_sensitivity"
+          ],
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "name": "Content Safety (Text Analyze)",
+      "description": "Use Azure Content Safety to detect harmful content.",
+      "type": "python",
+      "package": "promptflow-tools",
+      "package_version": "0.1.0b12"
+    }
+  },
+  "code": {
+    "hello.jinja2": {
+      "type": "prompt",
+      "inputs": {
+        "text": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "description": "Please replace the template with your own prompt.",
+      "source": "hello.jinja2"
+    },
+    "content_filter.py": {
+      "type": "python",
+      "inputs": {
+        "input_text": {
+          "type": [
+            "object"
+          ]
+        },
+        "bad_words_path": {
+          "type": [
+            "string"
+          ],
+          "default": "./english_badwords.txt"
+        }
+      },
+      "source": "content_filter.py",
+      "function": "is_content_appropriate"
+    },
+    "default_response.py": {
+      "type": "python",
+      "source": "default_response.py",
+      "function": "default"
+    },
+    "ollama.py": {
+      "type": "python",
+      "inputs": {
+        "prompt": {
+          "type": [
+            "string"
+          ]
+        },
+        "context": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "ollama.py",
+      "function": "generate"
+    },
+    "static_lookup.py": {
+      "type": "python",
+      "inputs": {
+        "prompt": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "static_lookup.py",
+      "function": "static_input_type"
+    },
+    "bad_content.py": {
+      "type": "python",
+      "source": "bad_content.py",
+      "function": "inappropriate_language"
+    },
+    "generate_response.py": {
+      "type": "python",
+      "inputs": {
+        "ollama_output": {
+          "type": [
+            "string"
+          ]
+        },
+        "content_output": {
+          "type": [
+            "string"
+          ]
+        },
+        "static_output": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "generate_response.py",
+      "function": "create_output"
+    },
+    "static_prompt.py": {
+      "type": "python",
+      "inputs": {
+        "file_path": {
+          "type": [
+            "string"
+          ],
+          "default": "./example_prompts.md"
+        }
+      },
+      "source": "static_prompt.py",
+      "function": "example_prompts"
+    },
+    "static_websites.py": {
+      "type": "python",
+      "inputs": {
+        "file_path": {
+          "type": [
+            "string"
+          ],
+          "default": "./websites.html"
+        }
+      },
+      "source": "static_websites.py",
+      "function": "example_prompts"
+    },
+    "static_date.py": {
+      "type": "python",
+      "source": "static_date.py",
+      "function": "get_current_date"
+    },
+    "static_output.py": {
+      "type": "python",
+      "inputs": {
+        "prompt": {
+          "type": [
+            "string"
+          ]
+        },
+        "websites": {
+          "type": [
+            "string"
+          ]
+        },
+        "dates": {
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "source": "static_output.py",
+      "function": "generate_static_output"
+    }
+  }
+}
