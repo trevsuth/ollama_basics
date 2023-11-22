@@ -99,3 +99,11 @@ nodes:
     prompt: ${static_prompt.output}
     websites: ${static_websites.output}
     dates: ${static_date.output}
+- name: create_history
+  type: python
+  source:
+    type: code
+    path: create_history.py
+  inputs:
+    prior_history: ${input.context}
+    new_item: ${output.output_prompt}
