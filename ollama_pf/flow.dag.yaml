@@ -4,7 +4,7 @@ environment:
 inputs:
   prompt:
     type: string
-    default: Is this legal
+    default: ""
     is_chat_input: true
     is_chat_history: false
   context:
@@ -99,9 +99,3 @@ nodes:
     prompt: ${static_prompt.output}
     websites: ${static_websites.output}
     dates: ${static_date.output}
-- name: default_chat_prompt
-  type: prompt
-  source:
-    type: code
-    path: default_chat_prompt.jinja2
-  inputs: {}
