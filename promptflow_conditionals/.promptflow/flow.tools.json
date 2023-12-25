@@ -118,6 +118,11 @@
           "type": [
             "string"
           ]
+        },
+        "model": {
+          "type": [
+            "string"
+          ]
         }
       },
       "source": "ollama.py",

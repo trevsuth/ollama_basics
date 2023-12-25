@@ -4,13 +4,16 @@ environment:
 inputs:
   prompt:
     type: string
-    default: ""
+    default: Hello
     is_chat_input: true
     is_chat_history: false
   context:
     type: list
     default: []
     is_chat_history: true
+  model:
+    type: string
+    default: mistral
 outputs:
   output_prompt:
     type: string
@@ -32,6 +35,7 @@ nodes:
   inputs:
     prompt: ${inputs.prompt}
     context: ${inputs.context}
+    model: ${inputs.model}
   activate:
     when: ${static_lookup.output}
     is: not static
@@ -99,11 +103,3 @@ nodes:
     prompt: ${static_prompt.output}
     websites: ${static_websites.output}
     dates: ${static_date.output}
-- name: create_history
-  type: python
-  source:
-    type: code
-    path: create_history.py
-  inputs:
-    prior_history: ${input.context}
-    new_item: ${output.output_prompt}

@@ -12,10 +12,10 @@ import requests
 
 
 @tool
-def generate(prompt: str, context: str):
+def generate(prompt: str, context: str, model: str):
     r = requests.post('http://localhost:11434/api/generate',
                     json={
-                        'model': 'llama2',
+                        'model': model,
                         'prompt': prompt,
                         'context': context,
                     },
